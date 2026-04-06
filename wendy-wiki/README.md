@@ -4,8 +4,8 @@ A compounding personal knowledge base. You journal each day, Claude
 reads the entry and updates living wiki pages that get smarter about you
 over time. Tone is direct and blunt — truth, not flattery.
 
-Built first for the **Trading** domain. Health and Growth folders are
-scaffolded and will be filled in next.
+All three domains are live: **Trading**, **Health**, **Growth**, plus a
+weekly cross-domain synthesis.
 
 ---
 
@@ -23,39 +23,51 @@ wendy-wiki/
     growth/
     master-log.md
   queries/     ← saved answers to questions you ask
+    synthesis-weekly.md
   ingest_trading.py
+  ingest_health.py
+  ingest_growth.py
 ```
 
 ---
 
-## Daily flow (Trading)
+## Daily flow
 
-### 1. Add today's entry
-In your terminal, from the `wendy-wiki/` folder:
+### 1. Add today's entries
+From the `wendy-wiki/` folder, run any of:
 
 ```
 python3 ingest_trading.py
+python3 ingest_health.py
+python3 ingest_growth.py
 ```
 
-It will ask you each field one at a time. Press Enter to skip any field.
-It writes `raw/trading/YYYY-MM-DD.md` and appends to `master-log.md`.
+Each one asks the fields one at a time. Press Enter to skip a field.
+Each writes `raw/<domain>/YYYY-MM-DD.md` and appends to `master-log.md`.
 
 ### 2. Update the wiki
-Open Claude Code in this folder and say:
+Open Claude Code in this folder and say one of:
 
 > Update the trading wiki from today's entry.
+> Update the health wiki from today's entry.
+> Update the growth wiki from today's entry.
 
 Claude will:
-1. Read the newest file in `raw/trading/`
-2. Update each page in `wiki/trading/`:
-   - `trading-psychology.md`
-   - `trading-best-decisions.md`
-   - `trading-worst-decisions.md`
-   - `trading-patterns.md`
-   - `trading-growth.md`
+1. Read the newest file in `raw/<domain>/`
+2. Update each page in `wiki/<domain>/`
 3. Refresh the "Current understanding", "Confidence", and
    "Last updated" sections at the top of each page
 4. Append dated evidence below — never delete prior content
+
+### 3. Weekly cross-domain synthesis
+Once a week, in Claude Code:
+
+> Run the weekly cross-domain synthesis.
+
+Claude reads the last 7 days across all three domains and the current
+wiki state, then appends a new dated section to
+`wiki/synthesis-weekly.md` naming the concrete cause-and-effect chains
+that connect trading, health, and growth.
 
 ### 3. Ask questions any time
 In Claude Code, ask things like:
@@ -79,9 +91,9 @@ entry. Save answers worth keeping into `queries/` with a dated filename.
 
 ---
 
-## What's next
+## Wiki pages
 
-Once the trading loop feels right, we add:
-- `ingest_health.py` and the 5 health wiki pages
-- `ingest_growth.py` and the 6 growth wiki pages
-- `synthesis-weekly.md` — cross-domain pattern detection run weekly
+**Trading** — psychology, best-decisions, worst-decisions, patterns, growth
+**Health** — energy-patterns, habit-tracker, body-signals, sleep-patterns, wellness-growth
+**Growth** — identity, playing-small, showing-up, the-gap, levers, growth-arc
+**Cross-domain** — synthesis-weekly
