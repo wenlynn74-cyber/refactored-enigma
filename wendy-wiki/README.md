@@ -24,9 +24,11 @@ wendy-wiki/
     master-log.md
   queries/     ← saved answers to questions you ask
     synthesis-weekly.md
-  ingest_trading.py
-  ingest_health.py
-  ingest_growth.py
+  ingest_trading.py   ← text entry
+  ingest_health.py    ← text entry
+  ingest_growth.py    ← text entry
+  ingest_voice.py     ← voice entry (any domain, cross-platform)
+  requirements.txt
 ```
 
 ---
@@ -34,7 +36,8 @@ wendy-wiki/
 ## Daily flow
 
 ### 1. Add today's entries
-From the `wendy-wiki/` folder, run any of:
+
+**Text entry** — from the `wendy-wiki/` folder:
 
 ```
 python3 ingest_trading.py
@@ -42,8 +45,26 @@ python3 ingest_health.py
 python3 ingest_growth.py
 ```
 
-Each one asks the fields one at a time. Press Enter to skip a field.
-Each writes `raw/<domain>/YYYY-MM-DD.md` and appends to `master-log.md`.
+**Voice entry** — speak instead of type (Mac / Windows / Linux):
+
+```
+python3 ingest_voice.py trading
+python3 ingest_voice.py health
+python3 ingest_voice.py growth
+```
+
+For each field in voice mode: press Enter to start recording, Enter again
+to stop, then keep (`y`), re-record (`r`), edit (`e`), or skip (`s`).
+Whisper transcribes locally-captured audio through the OpenAI API.
+
+Both modes write `raw/<domain>/YYYY-MM-DD.md` and append to `master-log.md`.
+
+**One-time voice setup:**
+```
+pip install -r requirements.txt
+export OPENAI_API_KEY=sk-...        # Mac/Linux
+setx     OPENAI_API_KEY sk-...       # Windows
+```
 
 ### 2. Update the wiki
 Open Claude Code in this folder and say one of:
@@ -69,7 +90,7 @@ wiki state, then appends a new dated section to
 `wiki/synthesis-weekly.md` naming the concrete cause-and-effect chains
 that connect trading, health, and growth.
 
-### 3. Ask questions any time
+### 4. Ask questions any time
 In Claude Code, ask things like:
 
 - "What patterns keep showing up on my worst trading days?"
